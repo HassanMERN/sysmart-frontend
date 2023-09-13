@@ -64,9 +64,7 @@ const MyPurchases = () => {
             </div>
           </div>
         ) : (
-          <div>
-            <h3>Loading Data</h3>
-          </div>
+          <div></div>
         )}
       </section>
       <div className="flex-center">
