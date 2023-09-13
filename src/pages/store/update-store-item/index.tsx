@@ -1,0 +1,40 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import UpdateStoreItemForm from "@forms/update-store-item/update-store-item";
+import PrivateRoute from "@components/PrivateRoute";
+import { useRouter } from "next/router";
+import { fetchData } from "@helpers/fetchData";
+
+function UpdateStoreItem() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [storeItemData, setStoreItemData] = useState<any>(null);
+
+  useEffect(() => {
+    if (id) {
+      const fetchStoreItemData = async () => {
+        try {
+          const response: any = await fetchData(`api/store-items/find/${id}`);
+          setStoreItemData(response.data);
+        } catch (error) {
+          console.error("Error fetching store item data:", error);
+        }
+      };
+
+      fetchStoreItemData();
+    }
+  }, [id]);
+  return (
+    <PrivateRoute>
+      <h1>Update Store Item</h1>
+      {storeItemData ? (
+        <UpdateStoreItemForm initialValues={storeItemData} />
+      ) : (
+        <></>
+      )}
+    </PrivateRoute>
+  );
+}
+
+export default UpdateStoreItem;

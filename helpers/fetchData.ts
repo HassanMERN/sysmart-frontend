@@ -2,10 +2,9 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3001";
 
-export const fetchData = async (
-  endpoint: string,
-  token: string | null = null
-) => {
+export const fetchData = async (endpoint: string) => {
+  const token = localStorage.getItem("token");
+
   try {
     const config = {
       headers: {

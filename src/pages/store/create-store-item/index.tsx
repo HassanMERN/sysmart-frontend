@@ -1,11 +1,11 @@
 "use client";
-import StoreForm from "@forms/create-store/create-store";
+import StoreItemForm from "@forms/create-store-item/create-store-item";
 import PrivateRoute from "@components/PrivateRoute";
 
 function Register() {
   return (
     <PrivateRoute>
-      <StoreForm />
+      <StoreItemForm />
     </PrivateRoute>
   );
 }

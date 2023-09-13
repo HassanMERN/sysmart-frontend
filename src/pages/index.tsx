@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { fetchData } from "@helpers/fetchData";
+import { useRouter } from "next/router";
 import PrivateRoute from "@components/PrivateRoute";
+import ButtonLink from "@components/ButtonLink";
 
 const Home = () => {
   const [userData, setUserData] = useState<any>(null);
+  const [storeData, setstoreData] = useState<any>(null);
+  const router = useRouter(); // Initialize the useHistory hook
 
   useEffect(() => {
     const user: any = localStorage.getItem("user");
@@ -14,26 +18,26 @@ const Home = () => {
     }
   }, []);
 
-  const [storeData, setstoreData] = useState<any>(null);
-
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
     const fetchstoreDataFromAPI = async () => {
       try {
-        const response: any = await fetchData(
-          "api/stores/get-user-stores",
-          token
-        );
-        await localStorage.setItem("userStore", JSON.stringify(response.data));
-        console.log(response);
+        const response: any = await fetchData("api/stores/get-user-stores");
+        localStorage.setItem("userStore", JSON.stringify(response.data));
+        console.log(response.data);
+        setstoreData(response.data);
       } catch (error) {
         console.error("Error fetching storeData:", error);
       }
     };
-
+    console.log("Local Storage: ", localStorage);
     fetchstoreDataFromAPI();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+
+    router.push("/login");
+  };
 
   return (
     <PrivateRoute>
@@ -43,6 +47,25 @@ const Home = () => {
           <div className="hello_message">Hello {userData?.first_name}</div>
 
           <h3 className="dashboard_heading">Your Store</h3>
+          {storeData ? (
+            <ButtonLink text={storeData?.title} route="/store/"></ButtonLink>
+          ) : (
+            <>
+              <h3>You don't have a store</h3>
+              <ButtonLink route="/store/create-store/" text="Create a Store" />
+            </>
+          )}
+
+          <h3>Market Place</h3>
+          <ButtonLink route="/market" text="Go to marketplace" />
+
+          <h3>Your Purchases</h3>
+          <ButtonLink
+            route="/purchase-order/my-purchases"
+            text="view purchase your orders"
+          />
+
+          <button onClick={handleLogout}>Logout</button>
         </div>
       </section>
     </PrivateRoute>

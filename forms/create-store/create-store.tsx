@@ -1,42 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import ButtonLink from "@components/ButtonLink";
+import { postData } from "@helpers/postData";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+  title: Yup.string().required("Title is required"),
 });
 
-const LoginForm: React.FC = () => {
+const StoreForm: React.FC = () => {
   const initialValues = {
-    email: "",
-    password: "",
+    title: "",
   };
   const router = useRouter();
+  const [storeCreateError, setStoreCreateError] = useState<string | null>(null);
 
-  const url = `http://localhost:3001/api/auth/login`;
+  const url = `api/stores/create-store`;
   const handleSubmit = async (values: typeof initialValues) => {
+    let response: any;
     try {
-      const response = await axios.post(url, values);
-      await localStorage.setItem("token", response.data.data.user.token);
-      await localStorage.setItem(
-        "user",
-        JSON.stringify(response.data.data.user)
-      );
-      router.push("/");
+      response = await postData(url, values);
+      console.log(response);
+      if (response?.status === 201) {
+        router.push("/");
+      }
     } catch (error) {
-      console.error("Login error:", error);
+      router.push("/");
     }
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Create a Store</h1>
+      <h4>! A user can create only one store</h4>
+      {storeCreateError && <div className="error">{storeCreateError}</div>}
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -44,25 +44,19 @@ const LoginForm: React.FC = () => {
       >
         <Form>
           <div>
-            <label htmlFor="email">Email</label>
-            <Field type="email" id="email" name="email" />
-            <ErrorMessage name="email" component="div" className="error" />
+            <label htmlFor="title">Store Title</label>
+            <Field type="title" id="title" name="title" />
+            <ErrorMessage name="title" component="div" className="error" />
           </div>
 
           <div>
-            <label htmlFor="password">Password</label>
-            <Field type="password" id="password" name="password" />
-            <ErrorMessage name="password" component="div" className="error" />
-          </div>
-
-          <div>
-            <button type="submit">Login</button>
+            <button type="submit">Create Store</button>
           </div>
         </Form>
       </Formik>
-      <ButtonLink route="/register" text="Don't Have an Account? Sign Up " />
+      <ButtonLink route="/" text="Don't want to create a store? go back" />
     </div>
   );
 };
 
-export default LoginForm;
+export default StoreForm;

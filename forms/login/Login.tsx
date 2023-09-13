@@ -23,11 +23,10 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       const response = await axios.post(url, values);
-      await localStorage.setItem("token", response.data.data.user.token);
-      await localStorage.setItem(
-        "user",
-        JSON.stringify(response.data.data.user)
-      );
+      localStorage.setItem("token", response.data.data.user.token);
+      localStorage.setItem("user", JSON.stringify(response.data.data.user));
+      localStorage.setItem("userId", response.data.data.user.id);
+      console.log(localStorage);
       router.push("/");
     } catch (error) {
       console.error("Login error:", error);
