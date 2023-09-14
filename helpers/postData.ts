@@ -16,6 +16,6 @@ export const postData = async (endpoint: string, data: any) => {
     const response = await axios.post(`${API_URL}/${endpoint}`, data, config);
     return response;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };

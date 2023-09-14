@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Tabs, Tab, IconButton } from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteData } from "@helpers/deleteData";
+import { putData } from "@helpers/putData";
+import { postData } from "@helpers/postData";
+import ButtonLink from "./ButtonLink";
 
 interface ViewTableProps {
   data: any[];
@@ -9,6 +15,10 @@ interface ViewTableProps {
   buy?: (id: any) => void;
   addToCart?: (id: any) => void;
   poEndPoint?: string;
+  cartEndPoint?: string;
+  deleteEndPoint?: string;
+  buyItemEndPoint?: string;
+  cart?: boolean;
 }
 
 const ViewTable: React.FC<ViewTableProps> = ({
@@ -17,6 +27,10 @@ const ViewTable: React.FC<ViewTableProps> = ({
   buy,
   addToCart,
   poEndPoint,
+  cartEndPoint,
+  deleteEndPoint,
+  buyItemEndPoint,
+  cart,
 }) => {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +56,15 @@ const ViewTable: React.FC<ViewTableProps> = ({
     }
   };
 
+  const handleDelete = (id: any) => {
+    deleteEndPoint ? deleteData(deleteEndPoint, id) : {};
+    window.location.reload();
+  };
+  const handleBuy = (item: any) => {
+    buyItemEndPoint ? postData(buyItemEndPoint + `/${item.id}`, item) : {};
+    window.location.reload();
+  };
+
   return (
     <div>
       <table>
@@ -50,7 +73,7 @@ const ViewTable: React.FC<ViewTableProps> = ({
             {columns.map((column) => (
               <th key={column.field}>{column.name}</th>
             ))}
-            {poEndPoint ? <th>Actions</th> : <></>}
+            {poEndPoint || cart ? <th>Actions</th> : <></>}
           </tr>
         </thead>
         <tbody>
@@ -72,6 +95,39 @@ const ViewTable: React.FC<ViewTableProps> = ({
                   ) : (
                     <></>
                   )}
+
+                  {cartEndPoint ? (
+                    <>
+                      <Link href={`/${cartEndPoint}?id=${item.id}`}>
+                        <IconButton>
+                          <AddShoppingCartIcon />
+                        </IconButton>
+                      </Link>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  {cart ? (
+                    <>
+                      <Tab
+                        icon={
+                          <IconButton onClick={() => handleBuy(item)}>
+                            <ShoppingBasketIcon />
+                          </IconButton>
+                        }
+                      />
+
+                      <Tab
+                        icon={
+                          <IconButton onClick={() => handleDelete(item.id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        }
+                      />
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </Tabs>
               </td>
             </tr>
@@ -89,6 +145,8 @@ const ViewTable: React.FC<ViewTableProps> = ({
           Next
         </button>
       </div>
+
+      <ButtonLink text="Go to Dashboard" route="/" />
     </div>
   );
 };

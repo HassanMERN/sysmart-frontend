@@ -46,8 +46,8 @@ const Home = () => {
         <div className="dashboard_container">
           <h1>User Dashboard</h1>
           <div className="hello_message">Hello {userData?.first_name}</div>
-          <ButtonLink route='edit-profile' text="edit profile"/>
-
+          <ButtonLink route="edit-profile" text="Edit Profile" />{" "}
+          <button onClick={handleLogout}>Logout</button>
           <h3 className="dashboard_heading">Your Store</h3>
           {storeData ? (
             <>
@@ -61,20 +61,17 @@ const Home = () => {
               <ButtonLink route="/store/create-store/" text="Create a Store" />
             </>
           )}
-
           <h3>Market Place</h3>
           <ButtonLink route="/market" text="Go to marketplace" />
-
           <h3>Your Purchases</h3>
           <ButtonLink
             route="/purchase-order/my-purchases"
-            text="view purchase your orders"
+            text="View purchase your orders"
           />
-
+          <h3>Shopping Cart</h3>
+          <ButtonLink route="/cart" text="Go to cart" />
           <h3>Check out exclusive products</h3>
           <ExclusiveProducts />
-
-          <button onClick={handleLogout}>Logout</button>
         </div>
       </section>
     </PrivateRoute>

@@ -52,20 +52,18 @@ const ExclusiveProducts = () => {
         {poData && poData.length ? (
           <div className="store-container">
             <div className="button-wrapper flex-center">
-              <ViewTable data={poData} columns={storeItemColumns} />
+              <ViewTable
+                data={poData}
+                columns={storeItemColumns}
+                poEndPoint="purchase-order/create-purchase-order"
+                cartEndPoint="cart/add-to-cart"
+              />
             </div>
           </div>
         ) : (
           <div>Loading Products</div>
         )}
       </section>
-      <div className="flex-center">
-        <h3>View Store?</h3>
-        <div className="button-wrapper flex-center">
-          <ButtonLink text="Go to your store" route="/store" />
-        </div>
-      </div>
-      <ButtonLink route="/" text="go to dashboard" />
     </PrivateRoute>
   );
 };

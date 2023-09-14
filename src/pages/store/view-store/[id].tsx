@@ -78,7 +78,6 @@ const ViewStore = () => {
           <h3>Loading Store</h3>
         )}
       </section>
-      <button>Chat with Store Owner</button>
       <ButtonLink route="/market" text="go to market" />
       <ButtonLink route="/" text="go to dashboard" />
     </PrivateRoute>

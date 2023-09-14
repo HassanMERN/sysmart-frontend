@@ -9,7 +9,7 @@ const validationSchema = Yup.object().shape({
   quantity: Yup.number().required("Quantity is required"),
 });
 
-const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
+const AddToCartForm: React.FC<{ initialValues?: any }> = ({
   initialValues,
 }) => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
     string | null
   >(null);
 
-  const url = `api/purchase-orders/create-purchase-order`;
+  const url = `api/cart/create-cart-item`;
   const handleSubmit = async (values: typeof initialValues) => {
     console.log("Values: ", values);
     let response: any;
@@ -27,7 +27,7 @@ const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
       if (response?.status === 201) {
         router.back();
       }
-          } catch (error: any) {
+    } catch (error: any) {
       setStoreItemUpdateError(error);
     }
   };
@@ -45,9 +45,9 @@ const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
       >
         <Form>
           <div>
-            <label htmlFor="title">Item Title</label>
-            <Field type="text" id="title" name="title" />
-            <ErrorMessage name="title" component="div" className="error" />
+            <label htmlFor="item_name">Item Title</label>
+            <Field type="text" id="item_name" name="item_name" />
+            <ErrorMessage name="item_name" component="div" className="error" />
           </div>
 
           <div>
@@ -66,4 +66,4 @@ const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
   );
 };
 
-export default POCreateForm;
+export default AddToCartForm;
