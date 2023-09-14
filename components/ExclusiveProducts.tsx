@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchData } from "@helpers/fetchData";
-import PrivateRoute from "@components/PrivateRoute";
-import ButtonLink from "@components/ButtonLink";
-import ViewTable from "@components/ViewTable";
+import { fetchData } from "../helpers/fetchData";
+import PrivateRoute from "./PrivateRoute";
+import ButtonLink from "./ButtonLink";
+import ViewTable from "./ViewTable";
 
-const MyPurchases = () => {
+const ExclusiveProducts = () => {
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const MyPurchases = () => {
     const fetchpoDataFromAPI = async () => {
       try {
         const response: any = await fetchData(
-          "api/purchase-orders/my-purchase-orders"
+          "api/store-items/get-all-store-items"
         );
         localStorage.setItem("purchaseOrders", JSON.stringify(response.data));
         setpoData(response.data);
@@ -37,23 +37,18 @@ const MyPurchases = () => {
   const storeItemColumns = [
     {
       name: "Item Name",
-      field: "item_name",
+      field: "title",
     },
+
     {
-      name: "Quantity",
-      field: "quantity",
-    },
-    {
-      name: "Total Cost",
-      field: "total_cost",
+      name: "Unit Cost",
+      field: "unit_cost",
     },
   ];
 
   return (
     <PrivateRoute>
       <section className="w-full flex-center flex-col">
-        <h1>My Purchases</h1>
-
         {poData && poData.length ? (
           <div className="store-container">
             <div className="button-wrapper flex-center">
@@ -61,13 +56,13 @@ const MyPurchases = () => {
             </div>
           </div>
         ) : (
-          <div></div>
+          <div>Loading Products</div>
         )}
       </section>
       <div className="flex-center">
-        <h3>Wanna Purchase More?</h3>
+        <h3>View Store?</h3>
         <div className="button-wrapper flex-center">
-          <ButtonLink text="Go to market place" route="/market" />
+          <ButtonLink text="Go to your store" route="/store" />
         </div>
       </div>
       <ButtonLink route="/" text="go to dashboard" />
@@ -75,4 +70,4 @@ const MyPurchases = () => {
   );
 };
 
-export default MyPurchases;
+export default ExclusiveProducts;

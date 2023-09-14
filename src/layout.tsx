@@ -13,11 +13,9 @@ interface RootLayoutProps {
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
-      <div className="main">
-        <div className="gradient"></div>
-      </div>
+      <div className="main"></div>
 
-      <div className="app">{children}</div>
+      <div className="app gradient">{children}</div>
     </html>
   );
 };

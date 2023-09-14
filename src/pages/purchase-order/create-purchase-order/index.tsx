@@ -26,6 +26,7 @@ function CreatePo() {
     }
   }, [id]);
   const values = {
+    store_id: storeItemData?.storeId,
     id: storeItemData?.id,
     title: storeItemData?.title,
   };

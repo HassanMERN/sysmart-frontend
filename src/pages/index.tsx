@@ -3,6 +3,7 @@ import { fetchData } from "@helpers/fetchData";
 import { useRouter } from "next/router";
 import PrivateRoute from "@components/PrivateRoute";
 import ButtonLink from "@components/ButtonLink";
+import ExclusiveProducts from "@components/ExclusiveProducts";
 
 const Home = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -45,10 +46,15 @@ const Home = () => {
         <div className="dashboard_container">
           <h1>User Dashboard</h1>
           <div className="hello_message">Hello {userData?.first_name}</div>
+          <ButtonLink route='edit-profile' text="edit profile"/>
 
           <h3 className="dashboard_heading">Your Store</h3>
           {storeData ? (
-            <ButtonLink text={storeData?.title} route="/store/"></ButtonLink>
+            <>
+              <ButtonLink text={storeData?.title} route="/store/"></ButtonLink>
+              <h3>Your Sales</h3>
+              <ButtonLink route="/sales/" text="view your sales" />
+            </>
           ) : (
             <>
               <h3>You don't have a store</h3>
@@ -64,6 +70,9 @@ const Home = () => {
             route="/purchase-order/my-purchases"
             text="view purchase your orders"
           />
+
+          <h3>Check out exclusive products</h3>
+          <ExclusiveProducts />
 
           <button onClick={handleLogout}>Logout</button>
         </div>
