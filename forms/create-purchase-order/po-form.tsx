@@ -9,9 +9,7 @@ const validationSchema = Yup.object().shape({
   quantity: Yup.number().required("Quantity is required"),
 });
 
-const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
-  initialValues,
-}) => {
+const POCreateForm: React.FC<{ initialValues?: any }> = ({ initialValues }) => {
   const router = useRouter();
   const [storeItemUpdateError, setStoreItemUpdateError] = useState<
     string | null
@@ -27,7 +25,7 @@ const UpdateStoreItemForm: React.FC<{ initialValues?: any }> = ({
       if (response?.status === 201) {
         router.back();
       }
-          } catch (error: any) {
+    } catch (error: any) {
       setStoreItemUpdateError(error);
     }
   };

@@ -86,7 +86,7 @@ const Store = () => {
           </div>
         ) : (
           <div>
-            <h3>You don't have a store</h3>
+            <h3>You don&apos;t have a store</h3>
             <div className="button-wrapper flex-center">
               <ButtonLink text="create one" route="/store/create-store" />
               <ButtonLink text="Go back to dashboard" route="/" />
